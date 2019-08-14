@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Multiplication</string>
+    <string name="action_settings">Settings</string>
+    <string name="multiOne">Mnożenie przez 1</string>
+    <string name="multiTwo">Mnożenie przez 2</string>
+    <string name="multiThree">Mnożenie przez 3</string>
+    <string name="multiFour">Mnożenie przez 4</string>
+    <string name="multiFive">Mnożenie przez 5</string>
+    <string name="multiSix">Mnożenie przez 6</string>
+    <string name="multiSeven">Mnożenie przez 7</string>
+    <string name="multiEight">Mnożenie przez 8</string>
+    <string name="multiNine">Mnożenie przez 9</string>
+    <string name="multiTen">Mnożenie przez 10</string>
+    <string name="calculate">Licz</string>
+    <string name="check">Sprawdź</string>
+</resources>

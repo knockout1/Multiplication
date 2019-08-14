@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".MainActivity"
+    tools:showIn="@layout/activity_main">
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <Switch
+            android:id="@+id/multiOne"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/multiOne" />
+        <Switch
+            android:id="@+id/multiTwo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/multiTwo" />
+        <Switch
+            android:id="@+id/multiThree"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/multiThree" />
+        <Switch
+            android:id="@+id/multiFour"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/multiFour" />
+        <Switch
+            android:id="@+id/multiFive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/multiFive" />
+        <Switch
+            android:id="@+id/multiSix"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/multiSix" />
+        <Switch
+            android:id="@+id/multiSeven"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/multiSeven" />
+        <Switch
+            android:id="@+id/multiEight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/multiEight" />
+        <Switch
+            android:id="@+id/multiNine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/multiNine" />
+        <Switch
+            android:id="@+id/multiTen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/multiTen" />
+        <Button
+            android:id="@+id/calculate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/calculate" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
