@@ -5,7 +5,6 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SelectionSupporter {
 

@@ -12,5 +12,10 @@
     <string name="multiNine">Mnożenie przez 9</string>
     <string name="multiTen">Mnożenie przez 10</string>
     <string name="calculate">Licz</string>
-    <string name="check">Sprawdź</string>
+    <string name="checkResult">Sprawdź</string>
+    <string name="goodLuck">Powodzenia!</string>
+    <string name="selectAtLeastOneOption">Zaznacz conajmniej jedną opcję</string>
+    <string name="bravo">Brawo Ty!</string>
+    <string name="wrongAnswer">Niestety nie!</string>
+    <string name="next">Następne</string>
 </resources>

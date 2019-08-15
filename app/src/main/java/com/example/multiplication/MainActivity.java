@@ -26,29 +26,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         final SelectionSupporter selectionSupporter = new SelectionSupporter((LinearLayout) findViewById(R.id.layout));
 
         Button calculate = findViewById(R.id.calculate);
-
         calculate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Context context = getApplicationContext();
                 CharSequence text;
                 if (selectionSupporter.checkIfAnythingSelected()){
-                    text = "Powodzenia!";
+                    text = getResources().getString(R.string.goodLuck);
                     Intent intent = new Intent(MainActivity.this, MultiplicationActivity.class);
                     intent.putIntegerArrayListExtra("checkedElements", selectionSupporter.getCheckedElements());
                     startActivity(intent);
-
                 }
                 else{
-                    text = "Zaznacz conajmniej jedną opcję";
+                    text = getResources().getString(R.string.selectAtLeastOneOption);
                 }
-                int duration = Toast.LENGTH_SHORT;
-
-                Toast toast = Toast.makeText(context, text, duration);
+                Context context = getApplicationContext();
+                Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
                 toast.show();
             }
         });
