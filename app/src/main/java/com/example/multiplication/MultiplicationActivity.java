@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Pair;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -26,22 +27,30 @@ public class MultiplicationActivity extends Activity {
     private ArrayList<Integer> checkedValue;
     private List<Pair<Integer, Integer>> calculations = new ArrayList<>();
     private Boolean isResolved;
+    private int totalTasksNumber;
     private int numberOfMistakes = 0;
     private int numberOfAllowedMistakes;
+    private int currentCalculation = 1;
+    private TextView calculationsNumber;
+    private TextView mistakeNumber;
+    private TextView timer;
+    private Button checkButton;
+    private int timerCount = 15;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setResources();
+
         setContentView(R.layout.multiplication_activity);
-        resultImage = findViewById(R.id.resultImage);
-        resultEditText = findViewById(R.id.resultEditView);
         Intent intent = getIntent();
         checkedValue = intent.getIntegerArrayListExtra("checkedElements");
         calculations = prepareCalculations();
         numberOfAllowedMistakes = setNumberOfAllowedMistakes();
+        totalTasksNumber = calculations.size();
         showCalculation();
 
-        final Button checkButton = findViewById(R.id.checkButton);
         checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,6 +59,7 @@ public class MultiplicationActivity extends Activity {
                     showCalculation();
                 }
                 else {
+                    currentCalculation++;
                     String enteredResult = resultEditText.getText().toString();
                     Integer result;
                     try {
@@ -78,8 +88,17 @@ public class MultiplicationActivity extends Activity {
                 }
             }
         });
-
     }
+
+    private void setResources(){
+        resultImage = findViewById(R.id.resultImage);
+        resultEditText = findViewById(R.id.resultEditView);
+        calculationsNumber = findViewById(R.id.calculationsCounter);
+        mistakeNumber = findViewById(R.id.mistakesCounter);
+        timer = findViewById(R.id.timer);
+        checkButton = findViewById(R.id.checkButton);
+    }
+
 
     private void showCalculation() {
         isResolved = false;
@@ -97,6 +116,8 @@ public class MultiplicationActivity extends Activity {
             resultImage.setVisibility(View.INVISIBLE);
             resultEditText.setText("");
             resultEditText.setEnabled(true);
+            calculationsNumber.setText(getResources().getString(R.string.taskNumber) + currentCalculation +"/" + totalTasksNumber);
+            mistakeNumber.setText(getResources().getString(R.string.mistakeNumber) + numberOfMistakes + "/" + numberOfAllowedMistakes);
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm != null) {
                 imm.showSoftInput(resultEditText, InputMethodManager.SHOW_IMPLICIT);
@@ -104,6 +125,18 @@ public class MultiplicationActivity extends Activity {
         } else {
             showEnd(true);
         }
+    }
+
+    private void startTimer(){
+        timerCount = 15;
+        new CountDownTimer(17000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                timer.setText(String.valueOf(timerCount--));
+            }
+
+            public void onFinish() {
+            }
+        }.start();
     }
 
     private void showEnd(boolean success){
