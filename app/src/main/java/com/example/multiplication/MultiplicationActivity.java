@@ -40,10 +40,10 @@ public class MultiplicationActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.multiplication_activity);
 
         setResources();
 
-        setContentView(R.layout.multiplication_activity);
         Intent intent = getIntent();
         checkedValue = intent.getIntegerArrayListExtra("checkedElements");
         calculations = prepareCalculations();
