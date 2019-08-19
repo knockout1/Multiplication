@@ -116,8 +116,8 @@ public class MultiplicationActivity extends Activity {
             resultImage.setVisibility(View.INVISIBLE);
             resultEditText.setText("");
             resultEditText.setEnabled(true);
-            calculationsNumber.setText(getResources().getString(R.string.taskNumber) + currentCalculation +"/" + totalTasksNumber);
-            mistakeNumber.setText(getResources().getString(R.string.mistakeNumber) + numberOfMistakes + "/" + numberOfAllowedMistakes);
+            calculationsNumber.setText(getResources().getString(R.string.taskNumber) + " " + currentCalculation +"/" + totalTasksNumber);
+            mistakeNumber.setText(getResources().getString(R.string.mistakeNumber) + " " + numberOfMistakes + "/" + numberOfAllowedMistakes);
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm != null) {
                 imm.showSoftInput(resultEditText, InputMethodManager.SHOW_IMPLICIT);

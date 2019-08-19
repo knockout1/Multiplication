@@ -19,7 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    <activity android:name=".MultiplicationActivity">
+    <activity android:name=".MultiplicationActivity"
+        android:configChanges="orientation|screenSize"
+        >
+
     </activity>
     </application>
 
