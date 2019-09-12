@@ -12,11 +12,9 @@ class Calculations {
     private Integer multiplier;
     private Integer currentTaskIndex;
     private int numberOfTasksToResolve;
-    private int numberOfTasksLeftToResolve;
 
     Calculations(ArrayList<Integer> multiplicands) {
         tasksLeftToResolve = prepareCalculations(multiplicands);
-        numberOfTasksLeftToResolve = numberOfTasksToResolve;
     }
 
     private List<Pair<Integer, Integer>> prepareCalculations(ArrayList<Integer> choosedNumbers) {
@@ -32,7 +30,6 @@ class Calculations {
 
     void removeCalculation(Pair pair) {
         tasksLeftToResolve.remove(pair);
-        numberOfTasksLeftToResolve--;
     }
 
     Integer getMultiplicand() {
@@ -63,7 +60,7 @@ class Calculations {
     }
 
     int getNumberOfTasksLeftToResolve() {
-        return numberOfTasksLeftToResolve;
+        return tasksLeftToResolve.size();
     }
 
 }

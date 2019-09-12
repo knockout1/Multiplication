@@ -35,7 +35,7 @@ public class MultiplicationActivity extends Activity {
         game.prepareCalculation();
         showCalculation();
 
-
+//TODO: refacotr this
         checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

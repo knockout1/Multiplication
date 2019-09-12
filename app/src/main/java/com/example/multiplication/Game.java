@@ -4,6 +4,8 @@ import android.util.Pair;
 
 import java.util.Random;
 
+
+// TODO: refactor class
 class Game {
 
     boolean isResolved = true;
