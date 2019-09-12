@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Pair;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -14,52 +13,37 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 public class MultiplicationActivity extends Activity {
 
-    private Integer multiplicand;
-    private Integer multiplier;
     private ImageView resultImage;
     private EditText resultEditText;
-    private ArrayList<Integer> checkedValue;
-    private List<Pair<Integer, Integer>> calculations = new ArrayList<>();
-    private Boolean isResolved;
-    private int totalTasksNumber;
-    private int numberOfMistakes = 0;
-    private int numberOfAllowedMistakes;
-    private int currentCalculation = 1;
-    private TextView calculationsNumber;
-    private TextView mistakeNumber;
+    private TextView calculationsNumberTextView;
+    private TextView mistakeNumberTextView;
     private TextView timer;
     private Button checkButton;
     private int timerCount = 15;
+    private Game game;
+    private TextView calculationTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.multiplication_activity);
-
         setResources();
-
         Intent intent = getIntent();
-        checkedValue = intent.getIntegerArrayListExtra("checkedElements");
-        calculations = prepareCalculations();
-        numberOfAllowedMistakes = setNumberOfAllowedMistakes();
-        totalTasksNumber = calculations.size();
+        game = new Game(new Calculations(intent.getIntegerArrayListExtra("checkedElements")));
+        game.prepareCalculation();
         showCalculation();
+
 
         checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 CharSequence text;
-                if(isResolved){
+                if (game.isResolved) {
+                    game.prepareCalculation();
                     showCalculation();
-                }
-                else {
-                    currentCalculation++;
+                } else {
                     String enteredResult = resultEditText.getText().toString();
                     Integer result;
                     try {
@@ -67,20 +51,20 @@ public class MultiplicationActivity extends Activity {
                     } catch (NumberFormatException e) {
                         result = -1;
                     }
-                    if (result.equals(multiplicand * multiplier)) {
+
+                    if (game.checkProvidedAnswer(result)) {
                         text = getResources().getString(R.string.bravo);
                         resultImage.setImageResource(R.drawable.ok);
                     } else {
                         text = getResources().getString(R.string.wrongAnswer);
                         resultImage.setImageResource(R.drawable.bad);
-                        numberOfMistakes++;
-                        if (numberOfMistakes > numberOfAllowedMistakes){
+                        if (game.checkIfEndGame()) {
+                            game.endGame(false);
                             showEnd(false);
                         }
                     }
                     checkButton.setText(getResources().getString(R.string.next));
                     resultEditText.setEnabled(false);
-                    isResolved = true;
                     resultImage.setVisibility(View.VISIBLE);
                     Context context = getApplicationContext();
                     Toast toast = Toast.makeText(context, text, Toast.LENGTH_LONG);
@@ -90,44 +74,33 @@ public class MultiplicationActivity extends Activity {
         });
     }
 
-    private void setResources(){
+    private void setResources() {
         resultImage = findViewById(R.id.resultImage);
         resultEditText = findViewById(R.id.resultEditView);
-        calculationsNumber = findViewById(R.id.calculationsCounter);
-        mistakeNumber = findViewById(R.id.mistakesCounter);
+        calculationsNumberTextView = findViewById(R.id.calculationsCounter);
+        mistakeNumberTextView = findViewById(R.id.mistakesCounter);
         timer = findViewById(R.id.timer);
         checkButton = findViewById(R.id.checkButton);
+        calculationTextView = findViewById(R.id.calculation);
     }
 
 
     private void showCalculation() {
-        isResolved = false;
-        Random random = new Random();
-        if (calculations.size() > 0) {
-            int index = random.nextInt(calculations.size());
-            Pair pair = calculations.get(index);
-            multiplicand = (Integer) pair.first;
-            multiplier = (Integer) pair.second;
-            TextView calculation = findViewById(R.id.calculation);
-            calculation.setText(multiplicand + "*" + multiplier + "=");
-            calculations.remove(pair);
-            Button button = findViewById(R.id.checkButton);
-            button.setText(getResources().getString(R.string.checkResult));
-            resultImage.setVisibility(View.INVISIBLE);
-            resultEditText.setText("");
-            resultEditText.setEnabled(true);
-            calculationsNumber.setText(getResources().getString(R.string.taskNumber) + " " + currentCalculation +"/" + totalTasksNumber);
-            mistakeNumber.setText(getResources().getString(R.string.mistakeNumber) + " " + numberOfMistakes + "/" + numberOfAllowedMistakes);
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm != null) {
-                imm.showSoftInput(resultEditText, InputMethodManager.SHOW_IMPLICIT);
-            }
-        } else {
-            showEnd(true);
+        calculationTextView.setText(game.getCurrentCalculation().getMultiplicand() + "*" + game.getCurrentCalculation().getMultiplier() + "=");
+        Button button = findViewById(R.id.checkButton);
+        button.setText(getResources().getString(R.string.checkResult));
+        resultImage.setVisibility(View.INVISIBLE);
+        resultEditText.setText("");
+        resultEditText.setEnabled(true);
+        calculationsNumberTextView.setText(getResources().getString(R.string.taskNumber) + " " + game.getCurrentCalculationNumber() + "/" + game.getCurrentCalculation().getNumberOfTasksToResolve());
+        mistakeNumberTextView.setText(getResources().getString(R.string.mistakeNumber) + " " + game.getNumberOfMistakes() + "/" + game.getNumberOfAllowedMistakes());
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.showSoftInput(resultEditText, InputMethodManager.SHOW_IMPLICIT);
         }
     }
 
-    private void startTimer(){
+    private void startTimer() {
         timerCount = 15;
         new CountDownTimer(17000, 1000) {
             public void onTick(long millisUntilFinished) {
@@ -139,11 +112,11 @@ public class MultiplicationActivity extends Activity {
         }.start();
     }
 
-    private void showEnd(boolean success){
+    private void showEnd(boolean success) {
         ImageView finalResultImage = findViewById(R.id.resultImage);
-        if (success){
+        if (success) {
             resultImage.setImageResource(R.drawable.puchar);
-        }else {
+        } else {
             resultImage.setImageResource(R.drawable.loose);
         }
         finalResultImage.setVisibility(View.VISIBLE);
@@ -152,17 +125,4 @@ public class MultiplicationActivity extends Activity {
 
     }
 
-    private List<Pair<Integer, Integer>> prepareCalculations(){
-        List<Pair<Integer, Integer>> calculations = new ArrayList<>();
-        for (int i=0; i<checkedValue.size(); i++){
-            for (int j=0; j<10; j++) {
-                calculations.add(new Pair<>(checkedValue.get(i), j));
-            }
-        }
-        return calculations;
-    }
-
-    private int setNumberOfAllowedMistakes(){
-        return checkedValue.size();
-    }
 }
