@@ -40,19 +40,14 @@ class Calculations {
         return multiplier;
     }
 
-    private Integer getCurrentTaskIndex() {
-        return currentTaskIndex;
-    }
-
     Pair getCurrentTask() {
-        return tasksLeftToResolve.get(getCurrentTaskIndex());
+        return tasksLeftToResolve.get(currentTaskIndex);
     }
 
     void setCurrentTask(Integer currentTaskIndex) {
         this.currentTaskIndex = currentTaskIndex;
-        multiplicand = tasksLeftToResolve.get(getCurrentTaskIndex()).first;
-        multiplier = tasksLeftToResolve.get(getCurrentTaskIndex()).second;
-
+        multiplicand = tasksLeftToResolve.get(currentTaskIndex).first;
+        multiplier = tasksLeftToResolve.get(currentTaskIndex).second;
     }
 
     int getNumberOfTasksToResolve() {
