@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -12,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 public class MultiplicationActivity extends Activity {
 
@@ -35,7 +35,6 @@ public class MultiplicationActivity extends Activity {
         game.prepareCalculation();
         showCalculation();
 
-//TODO: refacotr this
         checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,11 +57,12 @@ public class MultiplicationActivity extends Activity {
                     } else {
                         text = getResources().getString(R.string.wrongAnswer);
                         resultImage.setImageResource(R.drawable.bad);
-                        if (game.checkIfEndGame()) {
-                            game.endGame(false);
-                            showEnd(false);
-                        }
+                        game.checkNumberOfMistakes();
                     }
+                    if (game.checkEndGame()) {
+                        showEnd(game.isGameSucceeded());
+                    }
+
                     checkButton.setText(getResources().getString(R.string.next));
                     resultEditText.setEnabled(false);
                     resultImage.setVisibility(View.VISIBLE);
@@ -100,18 +100,6 @@ public class MultiplicationActivity extends Activity {
         }
     }
 
-    private void startTimer() {
-        timerCount = 15;
-        new CountDownTimer(17000, 1000) {
-            public void onTick(long millisUntilFinished) {
-                timer.setText(String.valueOf(timerCount--));
-            }
-
-            public void onFinish() {
-            }
-        }.start();
-    }
-
     private void showEnd(boolean success) {
         ImageView finalResultImage = findViewById(R.id.resultImage);
         if (success) {
@@ -122,7 +110,6 @@ public class MultiplicationActivity extends Activity {
         finalResultImage.setVisibility(View.VISIBLE);
         Button checkButton = findViewById(R.id.checkButton);
         checkButton.setVisibility(View.INVISIBLE);
-
     }
 
 }

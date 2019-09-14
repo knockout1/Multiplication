@@ -5,6 +5,7 @@ import android.util.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
+
 class Calculations {
 
     private List<Pair<Integer, Integer>> tasksLeftToResolve;

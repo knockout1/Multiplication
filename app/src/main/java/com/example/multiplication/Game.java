@@ -5,17 +5,16 @@ import android.util.Pair;
 import java.util.Random;
 
 
-// TODO: refactor class
 class Game {
 
     boolean isResolved = true;
-    private int totalCalculation;
     private int numberOfMistakes;
     private int numberOfAllowedMistakes;
     private int currentCalculationNumber;
     private Calculations calculations;
     private Random random;
-
+    private boolean gameEnded;
+    private boolean gameSucceeded;
 
     Game(Calculations calculations) {
         this.calculations = calculations;
@@ -23,7 +22,6 @@ class Game {
         currentCalculationNumber = 1;
         random = new Random();
         numberOfAllowedMistakes = calculations.getNumberOfTasksToResolve() / 10;
-        totalCalculation = calculations.getNumberOfTasksToResolve();
     }
 
     Calculations getCurrentCalculation() {
@@ -32,19 +30,18 @@ class Game {
 
     void prepareCalculation() {
         isResolved = false;
-        if (calculations.getNumberOfTasksLeftToResolve() > 0) {
-            calculations.setCurrentTask(random.nextInt(calculations.getNumberOfTasksLeftToResolve()));
-        } else {
+        calculations.setCurrentTask(random.nextInt(calculations.getNumberOfTasksLeftToResolve()));
+        if (calculations.getNumberOfTasksLeftToResolve() == 1) {
             endGame(true);
         }
     }
 
     boolean checkProvidedAnswer(Integer enteredResult) {
-        currentCalculationNumber++;
         isResolved = true;
         if (enteredResult.equals(calculations.getMultiplicand() * calculations.getMultiplier())) {
             Pair pair = calculations.getCurrentTask();
             calculations.removeCalculation(pair);
+            currentCalculationNumber++;
             return true;
         } else {
             numberOfMistakes++;
@@ -52,12 +49,10 @@ class Game {
         }
     }
 
-    boolean checkIfEndGame() {
-        return numberOfMistakes > numberOfAllowedMistakes;
-    }
-
-    int getTotalCalculation() {
-        return totalCalculation;
+    void checkNumberOfMistakes() {
+        if (numberOfMistakes > numberOfAllowedMistakes) {
+            endGame(false);
+        }
     }
 
     int getNumberOfMistakes() {
@@ -72,7 +67,17 @@ class Game {
         return currentCalculationNumber;
     }
 
-    void endGame(boolean success) {
-
+    private void endGame(boolean success) {
+        gameEnded = true;
+        gameSucceeded = success;
     }
+
+    boolean checkEndGame() {
+        return gameEnded;
+    }
+
+    boolean isGameSucceeded() {
+        return gameSucceeded;
+    }
+
 }
